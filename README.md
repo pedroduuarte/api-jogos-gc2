@@ -39,6 +39,24 @@ Exemplo:
 http://localhost:3000/api/v1/jogos
 
 ---
+
+### POST /api/v1/jogos
+
+Adiciona um novo jogo na lista.
+
+Body para inserção: 
+
+{ 
+  "nome": "Resident Evil 9",
+  "plataforma": ["Xbox Series X", "PC", "PlayStation 5"],
+  "genero": "Ação-aventura, Terror",
+  "ano": 2026
+}
+
+Exemplo:
+http://localhost:3000/api/v1/jogos
+
+---
 ## Uso do GitFlow
 
 Este projeto utiliza o modelo de versionamento GitFlow para organizar o desenvolvimento.
