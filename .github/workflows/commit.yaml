@@ -23,7 +23,7 @@ jobs:
         run: npm install
 
       - name: Subir API em background
-        run: npm run dev 
+        run: npm run dev &
 
       - name: Testar endpoint
         run: curl http://localhost:3000/api/v1/jogos
