@@ -3,6 +3,7 @@ import Router from 'express';
 const jogosRouter = Router();
 
 jogosRouter.get('/jogos', getJogos);
+jogosRouter.post('/jogos', postJogos);
 
 let jogos = [
     {
@@ -37,6 +38,21 @@ let jogos = [
 
 function getJogos(req, res) {
     return res.status(200).json(jogos);
+}
+
+function postJogos(req, res) {
+    const { nome, plataforma, genero, ano } = req.body;
+
+    const novoJogo = {
+        id: jogos.length + 1,
+        nome,
+        plataforma,
+        genero,
+        ano
+    };
+
+    jogos.push(novoJogo);
+    return res.status(201).json(novoJogo);
 }
 
 export default jogosRouter;
