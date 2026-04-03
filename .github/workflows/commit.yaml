@@ -1,0 +1,29 @@
+name: CI - Commit
+on:
+  push:
+    branches: [ feature/post ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clonar repositorio
+        uses: actions/checkout@v3
+
+      - name: Setar a branch
+        run: git checkout feature/post
+
+      - name: Instalar Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Instalar dependências
+        run: npm install
+
+      - name: Subir API em background
+        run: npm run dev &
+
+      - name: Testar endpoint
+        run: curl http://localhost:3000/api/v1/jogos
