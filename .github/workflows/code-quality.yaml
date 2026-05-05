@@ -1,0 +1,98 @@
+name: Code Quality & Test Coverage
+
+on:
+  push:
+    branches:
+      - main
+      - master
+      - develop
+  pull_request:
+    branches:
+      - main
+      - master
+      - develop
+
+jobs:
+  code-style:
+    runs-on: ubuntu-latest
+    name: Verificar Estilo de Código
+
+    steps:
+      - name: Clonar repositório
+        uses: actions/checkout@v3
+
+      - name: Instalar Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Cache de dependências
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Instalar dependências
+        run: npm install
+
+      - name: Executar ESLint
+        run: npm run lint
+        continue-on-error: false
+
+  test-coverage:
+    runs-on: ubuntu-latest
+    name: Verificar Cobertura de Testes
+
+    steps:
+      - name: Clonar repositório
+        uses: actions/checkout@v3
+
+      - name: Instalar Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Cache de dependências
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Instalar dependências
+        run: npm install
+
+      - name: Executar testes com cobertura
+        run: npm run test:coverage
+
+      - name: Fazer upload da cobertura para Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./coverage/coverage-final.json
+          flags: unittests
+          name: codecov-umbrella
+
+      - name: Verificar cobertura mínima na branch principal
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+        run: |
+          # Verifica se o arquivo de cobertura existe
+          if [ ! -f coverage/coverage-summary.json ]; then
+            echo "Arquivo de cobertura não encontrado!"
+            exit 1
+          fi
+          
+          # Extrai a porcentagem de cobertura total
+          COVERAGE=$(cat coverage/coverage-summary.json | grep -o '"lines":[^}]*' | grep -o '[0-9]\+\.[0-9]\+' | head -1)
+          
+          echo "Cobertura de testes: ${COVERAGE}%"
+          
+          # Verifica se é menor que 90%
+          if (( $(echo "$COVERAGE < 90" | bc -l) )); then
+            echo "Cobertura de testes abaixo do mínimo de 90%!"
+            exit 1
+          fi
+          
+          echo "Cobertura de testes atende ao mínimo de 90%!"
