@@ -13,7 +13,6 @@ on:
       - develop
 
 jobs:
-  
   test-coverage:
     runs-on: ubuntu-latest
     name: Verificar Cobertura de Testes
@@ -48,21 +47,21 @@ jobs:
           flags: unittests
           name: codecov-umbrella
 
+      - name: Instalar bc (necessário para comparação)
+        run: sudo apt-get install -y bc
+
       - name: Verificar cobertura mínima na branch principal
         if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
         run: |
-          # Verifica se o arquivo de cobertura existe
           if [ ! -f coverage/coverage-summary.json ]; then
             echo "Arquivo de cobertura não encontrado!"
             exit 1
           fi
           
-          # Extrai a porcentagem de cobertura total
           COVERAGE=$(cat coverage/coverage-summary.json | grep -o '"lines":[^}]*' | grep -o '[0-9]\+\.[0-9]\+' | head -1)
           
           echo "Cobertura de testes: ${COVERAGE}%"
           
-          # Verifica se é menor que 90%
           if (( $(echo "$COVERAGE < 90" | bc -l) )); then
             echo "Cobertura de testes abaixo do mínimo de 90%!"
             exit 1
