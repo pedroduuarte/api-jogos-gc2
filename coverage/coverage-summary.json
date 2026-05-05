@@ -1,0 +1,4 @@
+{"total": {"lines":{"total":26,"covered":25,"skipped":0,"pct":96.15},"statements":{"total":27,"covered":26,"skipped":0,"pct":96.29},"functions":{"total":4,"covered":3,"skipped":0,"pct":75},"branches":{"total":4,"covered":4,"skipped":0,"pct":100},"branchesTrue":{"total":0,"covered":0,"skipped":0,"pct":100}}
+,"C:\\Users\\dl238\\OneDrive\\Documentos\\Jogos API\\api-jogos-gc2\\src\\app.js": {"lines":{"total":6,"covered":6,"skipped":0,"pct":100},"functions":{"total":0,"covered":0,"skipped":0,"pct":100},"statements":{"total":6,"covered":6,"skipped":0,"pct":100},"branches":{"total":0,"covered":0,"skipped":0,"pct":100}}
+,"C:\\Users\\dl238\\OneDrive\\Documentos\\Jogos API\\api-jogos-gc2\\src\\routes\\routes.js": {"lines":{"total":20,"covered":19,"skipped":0,"pct":95},"functions":{"total":4,"covered":3,"skipped":0,"pct":75},"statements":{"total":21,"covered":20,"skipped":0,"pct":95.23},"branches":{"total":4,"covered":4,"skipped":0,"pct":100}}
+}

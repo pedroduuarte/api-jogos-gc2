@@ -7,7 +7,7 @@
     "dev": "node src/server.js",
     "lint": "eslint src/",
     "test": "node node_modules/jest/bin/jest.js",
-    "test:coverage": "node node_modules/jest/bin/jest.js --coverage"
+    "test:coverage": "node node_modules/jest/bin/jest.js --coverage --coverageReporters=json-summary"
   },
   "keywords": [],
   "author": "",
