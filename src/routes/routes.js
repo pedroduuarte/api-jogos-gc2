@@ -1,10 +1,5 @@
-import Router from 'express';
-
-const jogosRouter = Router();
-
-jogosRouter.get('/jogos', getJogos);
-jogosRouter.post('/jogos', postJogos);
-jogosRouter.delete('/jogos/:id', deleteJogos);
+const express = require('express');
+const router = express.Router();
 
 let jogos = [
     {
@@ -35,13 +30,13 @@ let jogos = [
         genero: 'Ação-aventura',
         ano: 2013
     }
-]
+];
 
-function getJogos(req, res) {
+router.get('/jogos', (req, res) => {
     return res.status(200).json(jogos);
-}
+});
 
-function postJogos(req, res) {
+router.post('/jogos', (req, res) => {
     const { nome, plataforma, genero, ano } = req.body;
 
     const novoJogo = {
@@ -54,19 +49,24 @@ function postJogos(req, res) {
 
     jogos.push(novoJogo);
     return res.status(201).json(novoJogo);
-}
+});
 
-function deleteJogos(req, res) {
-    const { id } = req.params;
-    const jogoIndex = jogos.findIndex(jogo => jogo.id === parseInt(id));
+router.delete('/jogos/:id', (req, res) => {
+    const id = parseInt(req.params.id);
 
+    if (isNaN(id)) {
+        return res.status(400).json({ message: 'ID inválido' });
+    }
+
+    const jogoIndex = jogos.findIndex(jogo => jogo.id === id);
 
     if (jogoIndex === -1) {
         return res.status(404).json({ message: 'Jogo não encontrado' });
     }
 
     jogos.splice(jogoIndex, 1);
-    return res.status(204).json({ message: 'Jogo removido com sucesso' });
-}
 
-export default jogosRouter;
+    return res.status(204).send(); // 
+});
+
+module.exports = router;
