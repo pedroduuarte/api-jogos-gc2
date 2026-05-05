@@ -4,6 +4,7 @@ const jogosRouter = Router();
 
 jogosRouter.get('/jogos', getJogos);
 jogosRouter.post('/jogos', postJogos);
+jogosRouter.delete('/jogos/:id', deleteJogos);
 
 let jogos = [
     {
@@ -53,6 +54,19 @@ function postJogos(req, res) {
 
     jogos.push(novoJogo);
     return res.status(201).json(novoJogo);
+}
+
+function deleteJogos(req, res) {
+    const { id } = req.params;
+    const jogoIndex = jogos.findIndex(jogo => jogo.id === parseInt(id));
+
+
+    if (jogoIndex === -1) {
+        return res.status(404).json({ message: 'Jogo não encontrado' });
+    }
+
+    jogos.splice(jogoIndex, 1);
+    return res.status(204).json({ message: 'Jogo removido com sucesso' });
 }
 
 export default jogosRouter;
