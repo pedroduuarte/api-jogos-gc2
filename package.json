@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "node src/app.js",
     "lint": "eslint src/",
-    "test": "jest",
-    "test:coverage": "jest --coverage"
+    "test": "npx jest",
+    "test:coverage": "npx jest --coverage"
   },
   "keywords": [],
   "author": "",
