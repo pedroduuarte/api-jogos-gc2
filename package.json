@@ -7,7 +7,7 @@
     "dev": "node src/app.js",
     "lint": "eslint src/",
     "test": "node node_modules/jest/bin/jest.js",
-    "test:coverage": "npx jest --coverage"
+    "test:coverage": "node node_modules/jest/bin/jest.js --coverage"
   },
   "keywords": [],
   "author": "",
