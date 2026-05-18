@@ -8,7 +8,7 @@ let jogos = [
         plataforma: 'Nintendo Switch',
         genero: 'Ação-aventura',
         ano: 2017
-    }, 
+    },
     {
         id: 2,
         nome: 'God of War',
@@ -66,7 +66,7 @@ router.delete('/jogos/:id', (req, res) => {
 
     jogos.splice(jogoIndex, 1);
 
-    return res.status(204).send(); // 
+    return res.status(204).send(); //
 });
 
 module.exports = router;
