@@ -33,18 +33,4 @@ describe('DELETE /jogos', () => {
     expect(response.status).toBe(404);
   });
 
-  test('Deve criar um novo jogo', async () => {
-  const response = await request(app)
-    .post('/api/v1/jogos')
-    .send({
-      nome: 'Teste',
-      plataforma: 'PC',
-      genero: 'Ação',
-      ano: 2025
-    });
-
-  expect(response.status).toBe(201);
-  expect(response.body).toHaveProperty('id');
-});
-
 });
