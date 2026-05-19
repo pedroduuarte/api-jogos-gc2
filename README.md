@@ -1,9 +1,25 @@
+[![Docker Image](https://badgen.net/badge/docker/pedroduuarte%2Fapi-jogos-gc2/blue?icon=docker)](https://hub.docker.com/repository/docker/pedroduuarte/api-jogos-gc2/general)
+[![Docker Hub](https://badgen.net/badge/registry/DockerHub/g?icon=docker)](https://hub.docker.com/repository/docker/pedroduuarte/api-jogos-gc2/general)
+
+
 # API de Jogos
 
 > API simples desenvolvida com Node.js e Express
 ---
 
 ## Como executar o projeto
+
+### Usando Docker
+
+Se você tiver o Docker instalado, pode executar o projeto com os seguintes comandos:
+
+```bash
+
+docker run -d -p 3000:3000 pedroduuarte/api-jogos-gc2:latest
+```
+
+
+### Localmente 
 
 1. Clone o repositório
 
@@ -29,7 +45,7 @@ http://localhost:3000
 
 --- 
 
-## Endpoint disponível
+## Endpoints disponíveis
 
 ### GET /api/v1/jogos
 
@@ -45,13 +61,14 @@ http://localhost:3000/api/v1/jogos
 Adiciona um novo jogo na lista.
 
 Body para inserção: 
-
+```json
 { 
   "nome": "Resident Evil 9",
   "plataforma": ["Xbox Series X", "PC", "PlayStation 5"],
   "genero": "Ação-aventura, Terror",
   "ano": 2026
 }
+```
 
 Exemplo:
 http://localhost:3000/api/v1/jogos
