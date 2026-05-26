@@ -18,6 +18,22 @@ Se você tiver o Docker instalado, pode executar o projeto com os seguintes coma
 docker run -d -p 3000:3000 pedroduuarte/api-jogos-gc2:latest
 ```
 
+### Usando Vagrant
+
+O projeto inclui um `VagrantFile` para ambiente de desenvolvimento virtualizado com duas máquinas virtuais:
+
+- **vm1**: Ubuntu 22.04 com IP `192.168.33.10`, 1024MB de RAM e GUI ativada
+- **vm2**: Ubuntu 22.04 com IP `192.168.33.11`, 2048MB de RAM, GUI ativada, com provisioning automático que instala Node.js 20.x, Git e executa `npm install`
+
+Para usar:
+
+```bash
+vagrant up
+vagrant ssh vm2
+npm run dev
+```
+
+A aplicação estará acessível em `http://192.168.33.11:3000`
 
 ### Localmente 
 
