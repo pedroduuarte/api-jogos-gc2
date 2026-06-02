@@ -1,0 +1,62 @@
+---
+- name: Configurar Infraestrutura da Aplicação na VM2
+  hosts: app_servers
+  become: yes
+  vars:
+    repo_url: "/vagrant_data"
+    app_dir: "/var/www/api-jogos-gc2"
+
+  tasks:
+    - name: Atualizar cache do apt
+      apt:
+        update_cache: yes
+
+    - name: Instalar dependências básicas
+      apt:
+        name:
+          - curl
+          - git
+          - ca-certificates
+        state: present
+
+    - name: Adicionar repositório do NodeSource para Node.js 20.x
+      shell: "curl -fsSL https://deb.nodesource.com/setup_20.x | bash -"
+      args:
+        creates: /etc/apt/sources.list.d/nodesource.list
+
+    - name: Instalar Node.js
+      apt:
+        name: nodejs
+        state: present
+
+    - name: Garantir diretório da aplicação com permissões para o usuário vagrant
+      file:
+        path: "{{ app_dir }}"
+        state: directory
+        owner: vagrant
+        group: vagrant
+        mode: '0755'
+
+    - name: Clonar repositório privado da aplicação
+      git:
+        repo: "{{ repo_url }}"
+        dest: "{{ app_dir }}"
+        version: main
+        accept_hostkey: yes
+        force: yes
+
+    - name: Instalar PM2 globalmente
+      npm:
+        name: pm2
+        global: yes
+
+    - name: Instalar dependências do projeto (npm install)
+      npm:
+        path: "{{ app_dir }}"
+
+    - name: Iniciar aplicação com PM2 em background
+      shell: |
+        pm2 start src/server.js --name "api-jogos-gc2" || pm2 restart "api-jogos-gc2"
+        pm2 save
+      args:
+        chdir: "{{ app_dir }}"
