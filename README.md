@@ -18,22 +18,37 @@ Se você tiver o Docker instalado, pode executar o projeto com os seguintes coma
 docker run -d -p 3000:3000 pedroduuarte/api-jogos-gc2:latest
 ```
 
-### Usando Vagrant
+### Usando Vagrant e Ansible
 
-O projeto inclui um `VagrantFile` para ambiente de desenvolvimento virtualizado com duas máquinas virtuais:
+O projeto inclui um `Vagrantfile` configurado para subir duas máquinas virtuais e automatizar a instalação do ambiente utilizando o **Ansible**.
 
-- **vm1**: Ubuntu 22.04 com IP `192.168.33.10`, 1024MB de RAM e GUI ativada
-- **vm2**: Ubuntu 22.04 com IP `192.168.33.11`, 2048MB de RAM, GUI ativada, com provisioning automático que instala Node.js 20.x, Git e executa `npm install`
+- **vm1 (Nó de Controle)**: Ubuntu 22.04 (`192.168.33.10`). Responsável por rodar o Ansible. Durante o *provisioning*, ela instala o Ansible e gera uma chave SSH própria de forma automatizada.
+- **vm2 (App)**: Ubuntu 22.04 (`192.168.33.11`). Servidor de destino da aplicação. Durante a criação, ela aceita a chave SSH gerada pela VM1.
 
-Para usar:
+**Passo a passo para execução:**
 
+1. Suba a infraestrutura (isso criará as VMs e fará a configuração das chaves SSH):
 ```bash
 vagrant up
-vagrant ssh vm2
-npm run dev
 ```
 
-A aplicação estará acessível em `http://192.168.33.11:3000`
+2. Acesse o nó de controle (VM1):
+```bash
+vagrant ssh vm1
+```
+
+3. Dentro da VM1, navegue até a pasta onde os arquivos do Ansible foram copiados e execute o playbook:
+```bash
+cd ~/ansible
+ansible-playbook configura-node.yaml
+```
+
+O Ansible conectará na VM2, instalará as dependências de SO, o Node.js, fará o deploy do repositório a partir da pasta sincronizada e iniciará o servidor em *background* utilizando o **PM2**.
+
+Ao final, a aplicação estará acessível no seu navegador local em:
+```
+http://192.168.33.11:3000
+```
 
 ### Localmente 
 
