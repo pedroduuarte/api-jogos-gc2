@@ -3,3 +3,6 @@ coverage/
 
 # Chaves SSH geradas pelo Vagrant
 ansible_id.pub
+
+# Arquivos de estado do Vagrant
+.vagrant/
